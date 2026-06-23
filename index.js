@@ -63,6 +63,7 @@ function connect() {
   });
 
   let initialHeartbeatTimeout = null;
+  let heartbeatInterval = null;
 
   ws.on('close', (code, reason) => {
   console.log(`⚠️ Connection closed. Code: ${code}, Reason: ${reason || 'No reason'}`);
