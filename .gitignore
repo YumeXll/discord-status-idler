@@ -1,0 +1,17 @@
+# Environment variables (contains sensitive Discord token)
+.env
+
+# Node.js dependencies
+node_modules/
+
+# npm lock file (optional - you may want to commit this)
+# package-lock.json
+
+# IDE and OS files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
