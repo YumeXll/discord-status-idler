@@ -150,24 +150,34 @@ function sendIdentify() {
  * Start heartbeat interval
  */
 function startHeartbeat(interval) {
-  // Send first heartbeat immediately
-  send({
-    op: OPCODES.HEARTBEAT,
-    d: lastSequence,
-  });
+  // Calculate a random jitter for the first heartbeat
+  const initialDelay = Math.floor(interval * Math.random());
+  console.log(`⏱️ First heartbeat scheduled in ${initialDelay}ms (jitter)`);
 
-  // Then send periodic heartbeats
-  heartbeatInterval = setInterval(() => {
+  setTimeout(() => {
+    // Send the first heartbeat
     if (ws && ws.readyState === WebSocket.OPEN) {
       send({
         op: OPCODES.HEARTBEAT,
         d: lastSequence,
       });
-      console.log('💓 Heartbeat sent');
+      console.log('💓 Initial Heartbeat sent');
     }
-  }, interval);
 
-  console.log('✅ Heartbeat started');
+    // Now start the regular, steady interval
+    heartbeatInterval = setInterval(() => {
+      if (ws && ws.readyState === WebSocket.OPEN) {
+        send({
+          op: OPCODES.HEARTBEAT,
+          d: lastSequence,
+        });
+        console.log('💓 Heartbeat sent');
+      }
+    }, interval);
+
+  }, initialDelay);
+
+  console.log('✅ Heartbeat sequence initialized');
 }
 
 /**
