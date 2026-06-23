@@ -1,3 +1,16 @@
+const express = require('express');
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+// Simple endpoint for our future keep-alive pinger
+app.get('/health', (req, res) => {
+    res.status(200).send('Script is alive!');
+});
+
+app.listen(PORT, () => {
+    console.log(`Keep-alive server listening on port ${PORT}`);
+});
+
 require('dotenv').config();
 const WebSocket = require('ws');
 
