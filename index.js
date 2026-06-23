@@ -62,14 +62,20 @@ function connect() {
     }
   });
 
+  let initialHeartbeatTimeout = null;
+
   ws.on('close', (code, reason) => {
-    console.log(`⚠️  Connection closed. Code: ${code}, Reason: ${reason || 'No reason'}`);
-    
-    // Clear heartbeat interval
-    if (heartbeatInterval) {
-      clearInterval(heartbeatInterval);
-      heartbeatInterval = null;
-    }
+  console.log(`⚠️ Connection closed. Code: ${code}, Reason: ${reason || 'No reason'}`);
+  
+   // Clear both timers safely
+   if (initialHeartbeatTimeout) {
+     clearTimeout(initialHeartbeatTimeout);
+     initialHeartbeatTimeout = null;
+  }
+   if (heartbeatInterval) {
+     clearInterval(heartbeatInterval);
+     heartbeatInterval = null;
+  }
 
     attemptReconnect();
   });
